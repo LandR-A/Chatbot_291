@@ -82,11 +82,21 @@ def task_add():
         print('Неправильний формат дати')
 
 
-# Виводить усі збережені завдання
+# Виводить актуальні завдання
 def all_tasks():
-    print('Список усіх завдань: \n')
-    for i in load_value():
-        print(f"Предмет: {i['task']}, Дата здачі: {i['date_task']}, Опис: {i['description']}")
+    print('Список актуальних завдань:\n')
+    actual_tasks = []
+
+    for task in load_value():
+        task_date = datetime.datetime.strptime(task['date_task'], "%d %m %Y").date()
+        if task_date >= datetime.date.today():
+            actual_tasks.append(task)
+
+    if actual_tasks:
+        for task in actual_tasks:
+            print(f"Предмет: {task['task']}, Дата здачі: {task['date_task']}, Опис: {task['description']}")
+    else:
+        print("Актуальних завдань немає.")
 
 # Виводить завдання, що мають бути здані сьогодні або завтра
 def notification():
